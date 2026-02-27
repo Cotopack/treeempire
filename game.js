@@ -4,14 +4,14 @@ tg.expand();
 let userId = tg.initDataUnsafe?.user?.id || Math.floor(Math.random()*999999);
 let username = tg.initDataUnsafe?.user?.username || "Player";
 
-let startParam = tg.initDataUnsafe?.start_param;
-let ref = startParam || null;
-
 let coins = 0;
 let perSecond = 1;
 let level = 1;
 
+// Login
 async function login() {
+    let urlParams = new URLSearchParams(window.location.search);
+    let ref = urlParams.get("ref");
     let res = await fetch("/login", {
         method:"POST",
         headers:{"Content-Type":"application/json"},
@@ -42,6 +42,7 @@ setInterval(()=>{
     });
 },5000);
 
+// Buttons
 document.getElementById("upgrade").onclick = ()=>{
     if(coins>=100){
         coins-=100;
@@ -49,13 +50,6 @@ document.getElementById("upgrade").onclick = ()=>{
         level++;
         group.scale.set(1+level*0.05,1+level*0.05,1+level*0.05);
     }
-};
-
-document.getElementById("invite").onclick = ()=>{
-    const link = `https://t.me/TreeEmpireBot?start=${userId}`;
-    tg.openTelegramLink(
-        `https://t.me/share/url?url=${encodeURIComponent(link)}&text=🌳 Join TREE COIN and grow your Web3 forest!`
-    );
 };
 
 document.getElementById("leaders").onclick = async ()=>{
@@ -69,12 +63,18 @@ document.getElementById("leaders").onclick = async ()=>{
     });
 };
 
+document.getElementById("invite").onclick = ()=>{
+    const refLink = `https://t.me/YOUR_BOT?start=${userId}`;
+    tg.openTelegramLink(
+        `https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=🌳 Join TREE COIN and grow your Web3 forest!`
+    );
+};
+
 /* ===== 3D TREE ===== */
-
 let scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x0f2027, 5, 25);
+scene.fog = new THREE.Fog(0x0f2027,5,25);
 
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1,1000);
 let renderer = new THREE.WebGLRenderer({canvas:document.getElementById("game"), alpha:true, antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.set(0,2,6);
@@ -96,7 +96,6 @@ trunk.position.y=1.5;
 group.add(trunk);
 
 let leaves = [];
-
 for(let i=0;i<10;i++){
     let geo = new THREE.SphereGeometry(1.2,16,16);
     let mat = new THREE.MeshStandardMaterial({color:0x2ecc71});
@@ -110,17 +109,14 @@ for(let i=0;i<10;i++){
 function animate(){
     requestAnimationFrame(animate);
     group.rotation.y+=0.002;
-
     leaves.forEach(l=>{
         l.position.y = l.userData.baseY + Math.sin(Date.now()*0.002)*0.05;
     });
-
     renderer.render(scene,camera);
 }
 animate();
 
-/* TON CONNECT */
-
+/* ===== TON CONNECT ===== */
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
     manifestUrl: 'tonconnect-manifest.json',
     buttonRootId: 'ton-connect'
