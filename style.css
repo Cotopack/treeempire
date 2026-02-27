@@ -1,77 +1,94 @@
-:root {
---bg1:#0f2027;
---bg2:#203a43;
---bg3:#2c5364;
---accent:#00ffae;
---gold:#f1c40f;
---card:rgba(255,255,255,0.08);
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+body {
+    background: radial-gradient(circle at top, #1f4037, #0f2027);
+    overflow:hidden;
+    color:white;
 }
 
-body{
-font-family:system-ui;
-background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
-color:white;
-display:flex;
-justify-content:center;
+canvas {
+    position:absolute;
+    top:0;
+    left:0;
 }
 
-.app{
-max-width:500px;
-width:100%;
-padding:20px;
+.glass {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0,255,150,0.2);
 }
 
-header{
-text-align:center;
-margin-bottom:20px;
+.top-bar {
+    position:absolute;
+    top:15px;
+    left:50%;
+    transform:translateX(-50%);
+    width:90%;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:10;
 }
 
-#balance{
-font-size:24px;
-color:var(--accent);
-font-weight:bold;
+.logo {
+    font-size:22px;
+    font-weight:600;
+    color:#00ffae;
 }
 
-#tree{
-font-size:110px;
-text-align:center;
-cursor:pointer;
-transition:0.1s;
-user-select:none;
+.stats {
+    text-align:right;
+    font-size:14px;
 }
 
-#tree:active{
-transform:scale(1.1);
+.controls {
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:15px;
+    display:flex;
+    gap:15px;
+    z-index:10;
 }
 
-.card{
-background:var(--card);
-padding:15px;
-border-radius:15px;
-margin-top:15px;
-backdrop-filter:blur(10px);
+button {
+    padding:12px 20px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(45deg,#00c853,#64dd17);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-button{
-width:100%;
-padding:10px;
-margin-top:8px;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
+button:hover {
+    transform:translateY(-3px);
+    box-shadow:0 5px 15px rgba(0,255,100,0.5);
 }
 
-#upgradeBtn{background:var(--accent);color:black;}
-#boostBtn{background:var(--gold);}
-#refBtn{background:#3498db;color:white;}
+.leaderboard {
+    position:absolute;
+    right:20px;
+    top:100px;
+    padding:20px;
+    display:none;
+    max-width:250px;
+    z-index:20;
+}
 
-@media(max-width:480px){
-#tree{font-size:90px;}
+.ton-btn {
+    position:absolute;
+    top:80px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:10;
 }
