@@ -1,38 +1,36 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tree Empire</title>
+<title>TREE COIN</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app">
-
-<header>
-<h1>🌳 Tree Empire</h1>
-<div id="balance">0 Tree Coin</div>
-<div id="income">Доход: 0 / сек</div>
-</header>
-
-<main>
-<div id="tree">🌳</div>
-
-<div class="card">
-<button id="upgradeBtn">Купить лесопилку (10000)</button>
-<button id="boostBtn">Буст x3 (реклама)</button>
-<button id="refBtn">Пригласить друга</button>
-<button id="buyTreeBtn">💰 Купить Tree Coin за TON</button>
+<div class="glass top-bar">
+    <div class="logo">🌳 TREE COIN</div>
+    <div class="stats">
+        <div>Balance: <span id="coins">0</span></div>
+        <div>+<span id="persec">1</span>/sec</div>
+    </div>
 </div>
 
-<div class="card">
-Рефералы: <span id="refs">0</span>
-</div>
-</main>
+<div id="ton-connect" class="ton-btn"></div>
 
+<div class="controls glass">
+    <button id="upgrade">🌱 Upgrade</button>
+    <button id="invite">🎁 Invite</button>
+    <button id="leaders">🏆 Leaderboard</button>
 </div>
+
+<div id="leaderboard" class="leaderboard glass"></div>
+
+<canvas id="game"></canvas>
 
 <script src="game.js"></script>
 </body>
