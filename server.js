@@ -1,57 +1,70 @@
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
+import express from "express"
+import cors from "cors"
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-let players = {};
+let users = {}
 
-app.use(express.static(path.join(__dirname, "../public")));
-
-app.post("/login", (req, res) => {
-    const { id, username, ref } = req.body;
-
-    if (!players[id]) {
-        players[id] = {
-            id,
-            username,
-            coins: 0,
-            perSecond: 1,
-            level: 1,
-            refBy: ref || null
-        };
-
-        // реферальный бонус
-        if (ref && players[ref]) {
-            players[ref].coins += 50;
-        }
+function getUser(id) {
+  if (!users[id]) {
+    users[id] = {
+      coins: 0,
+      level: 1,
+      miningRate: 1,
+      ref: null
     }
+  }
+  return users[id]
+}
 
-    res.json(players[id]);
-});
+// получить профиль
+app.post("/profile", (req, res) => {
+  const { userId } = req.body
+  const user = getUser(userId)
+  res.json(user)
+})
 
-app.post("/update", (req, res) => {
-    const { id, coins, perSecond, level } = req.body;
+// клик
+app.post("/click", (req, res) => {
+  const { userId } = req.body
+  const user = getUser(userId)
+  user.coins += user.level
+  res.json(user)
+})
 
-    if (players[id]) {
-        players[id].coins = coins;
-        players[id].perSecond = perSecond;
-        players[id].level = level;
-    }
+// авто майнинг
+app.post("/mine", (req, res) => {
+  const { userId } = req.body
+  const user = getUser(userId)
+  user.coins += user.miningRate
+  res.json(user)
+})
 
-    res.json({ success: true });
-});
+// апгрейд
+app.post("/upgrade", (req, res) => {
+  const { userId } = req.body
+  const user = getUser(userId)
 
+  const price = user.level * 50
+
+  if (user.coins >= price) {
+    user.coins -= price
+    user.level += 1
+    user.miningRate += 1
+  }
+
+  res.json(user)
+})
+
+// лидерборд
 app.get("/leaderboard", (req, res) => {
-    const sorted = Object.values(players)
-        .sort((a, b) => b.coins - a.coins)
-        .slice(0, 10);
+  const sorted = Object.entries(users)
+    .sort((a,b)=> b[1].coins - a[1].coins)
+    .slice(0,10)
 
-    res.json(sorted);
-});
+  res.json(sorted)
+})
 
-app.listen(3000, () => {
-    console.log("🌳 TREE COIN running on http://localhost:3000");
-});
+app.listen(3000, ()=> console.log("Server running on 3000"))
